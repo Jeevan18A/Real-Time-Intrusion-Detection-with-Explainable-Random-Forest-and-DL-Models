@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Advanced Intrusion Detection System</title>
+
+    <link rel="stylesheet" type="text/css" href="static/css/thirdparty.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="static/css/media.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="static/js/application.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><i class="fa fa-shield"></i> IDS Dashboard</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#about"><i class="fa fa-info-circle"></i> About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 60px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+                    <h1><i class="fa fa-shield"></i> Advanced Intrusion Detection System</h1>
+                    <p class="lead">Real-time network traffic analysis using Machine Learning</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="fa fa-chart-bar fa-2x"></i>
+                                <h4>Live Monitoring</h4>
+                                <p>Continuous packet sniffing and analysis</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="fa fa-brain fa-2x"></i>
+                                <h4>AI-Powered</h4>
+                                <p>ML models for accurate threat detection</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <i class="fa fa-exclamation-triangle fa-2x"></i>
+                                <h4>Risk Assessment</h4>
+                                <p>Real-time risk scoring and alerts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-chart-pie"></i> Source IP Distribution</h3>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="myChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-list"></i> Recent Flows</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="details">
+                                <thead>
+                                    <tr>
+                                        <th>Flow ID</th>
+                                        <th>Src IP</th>
+                                        <th>Src Port</th>
+                                        <th>Dst IP</th>
+                                        <th>Dst Port</th>
+                                        <th>Protocol</th>
+                                        <th>Prediction</th>
+                                        <th>Risk</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="about">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-info-circle"></i> About This System</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>This Intrusion Detection System uses advanced machine learning techniques to analyze network traffic in real-time. It employs:</p>
+                        <ul>
+                            <li><strong>Packet Sniffing:</strong> Captures network packets using Scapy</li>
+                            <li><strong>Flow Analysis:</strong> Groups packets into flows for comprehensive analysis</li>
+                            <li><strong>ML Classification:</strong> Random Forest model for attack detection</li>
+                            <li><strong>Anomaly Detection:</strong> Autoencoder for identifying unusual patterns</li>
+                            <li><strong>Explainability:</strong> LIME for model interpretation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <noscript>
+        <div id="noscript" class="alert alert-danger text-center">
+            <strong>JavaScript Required:</strong> This application requires JavaScript to function properly. Please enable JavaScript in your browser.
+        </div>
+    </noscript>
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        h1, h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flow Data Visualization</h1>
+        
+        <div class="chart-container">
+            <h2>Protocol Distribution</h2>
+            <canvas id="protocolChart" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h2>Packet Size Distribution</h2>
+            <canvas id="packetSizeChart" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h2>Flow Duration vs Packet Count</h2>
+            <canvas id="scatterChart" width="400" height="200"></canvas>
+        </div>
+        
+        <h2>Data Table</h2>
+        <div id="tableContainer"></div>
+    </div>
+
+    <script>
+        // Load and process CSV data
+        fetch('input_logs.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                processData(csvData);
+            })
+            .catch(error => {
+                console.error('Error loading CSV:', error);
+                // Generate sample data if CSV not found
+                generateSampleData();
+            });
+
+        function processData(csvData) {
+            const lines = csvData.split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    const values = lines[i].split(',');
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header.trim()] = values[index]?.trim();
+                    });
+                    data.push(row);
+                }
+            }
+            
+            createCharts(data);
+            createTable(data);
+        }
+
+        function generateSampleData() {
+            const sampleData = [
+                { protocol: 'TCP', packet_size: 1500, flow_duration: 1000, packet_count: 10 },
+                { protocol: 'UDP', packet_size: 500, flow_duration: 500, packet_count: 5 },
+                { protocol: 'TCP', packet_size: 1200, flow_duration: 800, packet_count: 8 },
+                { protocol: 'TCP', packet_size: 800, flow_duration: 600, packet_count: 6 },
+                { protocol: 'UDP', packet_size: 300, flow_duration: 300, packet_count: 3 }
+            ];
+            
+            createCharts(sampleData);
+            createTable(sampleData);
+        }
+
+        function createCharts(data) {
+            // Protocol Distribution
+            const protocolCounts = {};
+            data.forEach(row => {
+                const protocol = row.protocol || 'Unknown';
+                protocolCounts[protocol] = (protocolCounts[protocol] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('protocolChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(protocolCounts),
+                    datasets: [{
+                        data: Object.values(protocolCounts),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Packet Size Distribution
+            const packetSizes = data.map(row => parseInt(row.packet_size) || 0);
+            new Chart(document.getElementById('packetSizeChart'), {
+                type: 'bar',
+                data: {
+                    labels: data.map((_, index) => `Flow ${index + 1}`),
+                    datasets: [{
+                        label: 'Packet Size',
+                        data: packetSizes,
+                        backgroundColor: '#36A2EB'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Scatter Plot
+            const flowDurations = data.map(row => parseInt(row.flow_duration) || 0);
+            const packetCounts = data.map(row => parseInt(row.packet_count) || 0);
+            
+            new Chart(document.getElementById('scatterChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Flow Data',
+                        data: flowDurations.map((duration, index) => ({
+                            x: duration,
+                            y: packetCounts[index]
+                        })),
+                        backgroundColor: '#FF6384'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Flow Duration'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Packet Count'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createTable(data) {
+            const tableContainer = document.getElementById('tableContainer');
+            const table = document.createElement('table');
+            
+            // Create header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            if (data.length > 0) {
+                Object.keys(data[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key;
+                    headerRow.appendChild(th);
+                });
+            }
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Create body
+            const tbody = document.createElement('tbody');
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            
+            tableContainer.appendChild(table);
+        }
+    </script>
+</body>
+</html>
