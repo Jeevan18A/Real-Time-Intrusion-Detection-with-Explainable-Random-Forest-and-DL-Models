@@ -1,4 +1,4 @@
-# NIDS
+# Real Time ID
 
 ## About:
 As the complexity of cyber-attacks continues to rise, protecting computer systems
@@ -31,4 +31,26 @@ insights, reasoning, cybersecurity analysts, threat response, decisionmaking.
 <code>➢ source venv/bin/activate</code><br>
 <code>➢ pip install -r requirements.txt</code><br>
 <code>➢ python application.py</code><br>
+<code>➢ python xai_evaluation.py</code><br>
 <code>➢ Now open web address http://localhost:5000</code>
+
+## Results
+<img width="1905" height="626" alt="Screenshot 2025-10-12 180117" src="https://github.com/user-attachments/assets/aede3ec6-40e9-4d8d-b5d1-71ddba851c8a" />
+<img width="1898" height="879" alt="Screenshot 2025-10-12 180155" src="https://github.com/user-attachments/assets/f9272d61-6dc6-4025-9d3f-6a2336da7711" />
+<img width="1408" height="455" alt="output" src="https://github.com/user-attachments/assets/62ac847a-2272-4089-9738-17d5c9add2d3" />
+<img width="1907" height="786" alt="Screenshot 2025-10-12 180033" src="https://github.com/user-attachments/assets/918b108e-37f7-41cc-adb3-2ddd78d02343" />
+<img width="326" height="698" alt="Screenshot 2025-10-12 180045" src="https://github.com/user-attachments/assets/21cef6ac-7444-4188-8039-6d213002a507" />
+<img width="877" height="61" alt="Screenshot 2025-10-12 180353" src="https://github.com/user-attachments/assets/dff8cd0d-0ecb-406d-86f8-c97520b262f9" />
+
+
+
+
+
+
+
+
+
+
+
+
+
