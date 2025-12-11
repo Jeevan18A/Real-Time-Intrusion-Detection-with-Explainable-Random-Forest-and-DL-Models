@@ -1,4 +1,4 @@
-# Real-Time-Intrusion-Detection-with-Explainable-Random-Forest-and-DL-Models
+# Real Time Intrusion Detection System with Explainable Random Forest and DL Model
 
 ## About:
 As the complexity of cyber-attacks continues to rise, protecting computer systems
